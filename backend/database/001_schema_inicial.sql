@@ -1,6 +1,3 @@
--- Esquema PC3: modulo de cafeteria.
--- Ejecuta este script en PostgreSQL de Render desde pgAdmin antes de usar DDL_AUTO=validate.
-
 DROP TABLE IF EXISTS pedidos CASCADE;
 DROP TABLE IF EXISTS productos CASCADE;
 
