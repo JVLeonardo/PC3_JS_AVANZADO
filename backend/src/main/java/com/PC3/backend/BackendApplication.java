@@ -1,4 +1,4 @@
-package com.PC2.backend;
+package com.PC3.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.PC2.backend.config;
+package com.PC3.backend.config;
 
 import java.util.Arrays;
 import java.util.List;
