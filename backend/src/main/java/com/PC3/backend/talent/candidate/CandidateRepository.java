@@ -1,5 +1,9 @@
 package com.PC3.backend.talent.candidate;
 
-public interface CandidateRepository {
-	// TODO Integrante 1: extender JpaRepository<Candidate, Long>.
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+	
 }

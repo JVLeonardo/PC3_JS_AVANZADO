@@ -1,5 +1,10 @@
 package com.PC3.backend.talent.candidate;
 
+import lombok.Data;
+
+@Data
 public class CandidateRequest {
-	// TODO Integrante 1: definir nombrePostulante, emailPostulante y avatarUrl.
+	private String nombrePostulante;
+	private String emailPostulante;
+	private String avatarUrl;
 }
