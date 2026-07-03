@@ -100,6 +100,36 @@ function App() {
 
   async function handleSubmit(event) {
     event.preventDefault()
+
+    const skills = [
+      Number(form.javascript),
+      Number(form.react),
+      Number(form.springBoot),
+      Number(form.pythonDatos),
+      Number(form.sql),
+    ]
+
+    if (skills.some((v) => v < 0 || v > 100)) {
+      setError('Las habilidades deben estar entre 0 y 100.')
+      return
+    }
+
+    if (
+      Number(form.experienciaProyectos) < 0 ||
+      Number(form.experienciaProyectos) > 10
+    ) {
+      setError('La experiencia en proyectos debe estar entre 0 y 10.')
+      return
+    }
+
+    if (
+      Number(form.preferencia) < 0 ||
+      Number(form.preferencia) > 3
+    ) {
+      setError('La preferencia es inválida.')
+      return
+    }
+
     setLoading(true)
     setError('')
     setNotice('')
@@ -124,12 +154,13 @@ function App() {
       const mock = buildMockResult(payload)
       setResult(normalizeResult(mock, payload))
       setUsingMock(true)
-      setNotice('Backend TalentMatch pendiente: mostrando resultado demo para validar la interfaz.')
+      setNotice(
+        'Backend TalentMatch pendiente: mostrando resultado demo para validar la interfaz.'
+      )
     } finally {
       setLoading(false)
     }
   }
-
   async function handleSelectHistory(id) {
     setSelectedHistoryId(id)
     setError('')

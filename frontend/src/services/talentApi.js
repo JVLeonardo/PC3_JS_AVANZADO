@@ -46,3 +46,18 @@ export function deleteEvaluation(id) {
     method: 'DELETE',
   })
 }
+
+// ===========================
+// Módulo Evaluación
+// ===========================
+
+export function saveEvaluation(payload) {
+  return request('/api/talent-match/evaluations', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function getEvaluationById(id) {
+  return request(`/api/talent-match/evaluations/${id}`)
+}

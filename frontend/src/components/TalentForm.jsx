@@ -100,4 +100,5 @@ function TalentForm({ form, preferences, loading, onChange, onSubmit, onUploadAv
   )
 }
 
+
 export default TalentForm
