@@ -1,5 +1,19 @@
 package com.PC3.backend.talent.prediction;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PythonTalentResponse {
-	// TODO Integrante 3: mapear caso, prediccion, confianza, ranking, recomendaciones y entrada.
+    private String caso;
+    private String prediccion;
+    private BigDecimal confianza;
+    private List<Map<String, Object>> ranking;
+    private List<String> recomendaciones;
 }
