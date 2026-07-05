@@ -232,7 +232,8 @@ function App() {
             <SkillBars skills={skillValues} />
             <ProfileRanking ranking={result?.ranking} />
           </div>
-          <Roadmap result={result} />
+          {/* Le pasamos el 'form' para que calcule el reto especial */}
+          <Roadmap result={result} form={form} /> 
         </section>
       </section>
 
