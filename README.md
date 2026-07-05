@@ -1,20 +1,154 @@
-# PC3 JavaScript Avanzado - Cafeteria
+# TalentMatch AI - PC3 JavaScript Avanzado
 
-Proyecto monorepo para una prueba de React + Spring Boot. El `frontend/` se
-despliega en Vercel, el `backend/` en Render y la base de datos usa PostgreSQL
-nativo de Render. Las imagenes de productos se suben a Cloudinary.
+TalentMatch AI es una aplicacion web desarrollada para la PC3 del curso JavaScript Avanzado. El sistema evalua postulantes junior a partir de sus habilidades tecnicas, preferencias y experiencia en proyectos, luego usa un servicio de IA en FastAPI para recomendar el perfil tecnologico mas adecuado.
 
-## Requisitos Locales
+## Integrantes
 
+- Julio Rodrigo Minaya Urdanivia
+- Leonardo Jesus Gonzales Delgado
+- Andy Fabrizio Calagua Medina
+- Kevin Briceno Zegarra
+
+## Caso Resuelto
+
+El caso consiste en construir una aplicacion full stack que permita registrar postulantes, cargar su avatar en la nube, evaluar sus habilidades y obtener una prediccion de perfil tecnologico mediante un modelo IA.
+
+La app permite:
+
+- Registrar nombre, email y avatar del postulante.
+- Subir imagenes a Cloudinary.
+- Evaluar habilidades en JavaScript, React, Spring Boot, Python Datos y SQL.
+- Indicar experiencia en proyectos y preferencia laboral.
+- Obtener un perfil recomendado por IA.
+- Ver confianza, ranking de perfiles y ruta de mejora.
+- Consultar el historial de evaluaciones guardadas.
+- Ver detalle o eliminar evaluaciones registradas.
+
+## Enlaces Publicos
+
+- Frontend Vercel: https://pc-3-js-avanzado.vercel.app
+- Backend Spring Boot Render: https://pc3-backend.onrender.com
+- FastAPI Render: https://fastapi-talentmatch.onrender.com
+- FastAPI Swagger Docs: https://fastapi-talentmatch.onrender.com/docs
+
+> Nota: Render puede suspender servicios inactivos. Si la app no responde al primer intento, ingresar primero a los enlaces del backend y FastAPI para despertar los servicios y luego volver a probar desde Vercel.
+
+## Arquitectura
+
+```text
+Usuario
+  |
+  v
+Frontend React/Vite (Vercel)
+  |
+  v
+Backend Spring Boot (Render)
+  |            |
+  |            v
+  |       PostgreSQL Render
+  |
+  v
+FastAPI IA (Render)
+
+Cloudinary Upload Widget
+  ^
+  |
+Avatar del postulante
+```
+
+### Componentes
+
+- `frontend/`: interfaz React con Vite desplegada en Vercel.
+- `backend/`: API principal en Spring Boot desplegada en Render.
+- `python-ai/`: servicio FastAPI con modelo IA para prediccion de perfiles.
+- PostgreSQL Render: base de datos para candidatos, evaluaciones y predicciones.
+- Cloudinary: almacenamiento de avatars de postulantes.
+
+## Tecnologias Usadas
+
+- React
+- Vite
+- CSS
 - Java 21
-- Node.js y npm
-- PostgreSQL local opcional
-- pgAdmin opcional para administrar la base de Render
-- Cuenta en GitHub, Render, Vercel y Cloudinary
+- Spring Boot
+- Spring Data JPA
+- PostgreSQL
+- FastAPI
+- Python
+- scikit-learn
+- Cloudinary Upload Widget
+- Vercel
+- Render
 
-## Ejecutar Localmente
+## Flujo de Uso
 
-Backend:
+1. Ingresar a los servicios de Render si estan dormidos:
+   - https://pc3-backend.onrender.com
+   - https://fastapi-talentmatch.onrender.com
+2. Abrir el frontend:
+   - https://pc-3-js-avanzado.vercel.app
+3. Registrar los datos del postulante.
+4. Subir avatar con Cloudinary si se desea.
+5. Arrastrar los sliders para indicar habilidades tecnicas.
+6. Elegir preferencia laboral.
+7. Presionar `Analizar mi perfil`.
+8. Revisar el perfil recomendado, confianza, ranking y ruta de mejora.
+9. Consultar el historial de evaluaciones.
+10. Ver detalle o eliminar evaluaciones guardadas.
+
+## Endpoints Principales
+
+### Spring Boot
+
+```text
+POST /api/talent-match/predict
+GET /api/talent-match/history
+GET /api/talent-match/history/{id}
+DELETE /api/talent-match/history/{id}
+POST /api/talent-match/candidates
+POST /api/talent-match/evaluations
+```
+
+### FastAPI
+
+```text
+GET /health
+GET /metadata
+POST /predict/talent-match
+```
+
+## Variables de Entorno
+
+### Frontend
+
+```env
+VITE_API_URL=https://pc3-backend.onrender.com
+VITE_CLOUDINARY_CLOUD_NAME=tu_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=tu_upload_preset
+```
+
+### Backend
+
+```env
+DB_URL=jdbc:postgresql://<host>:5432/<database>
+DB_USERNAME=<usuario>
+DB_PASSWORD=<password>
+DDL_AUTO=validate
+CORS_ALLOWED_ORIGINS=https://pc-3-js-avanzado.vercel.app
+PYTHON_AI_URL=https://fastapi-talentmatch.onrender.com
+```
+
+### FastAPI
+
+Render asigna automaticamente la variable `PORT`. El comando de inicio debe usar:
+
+```bash
+uvicorn app:app --host 0.0.0.0 --port $PORT
+```
+
+## Ejecucion Local
+
+### Backend Spring Boot
 
 ```powershell
 cd backend
@@ -22,10 +156,23 @@ copy env\local.env.example env\local.env
 .\mvnw.cmd spring-boot:run
 ```
 
-Edita `backend/env/local.env` con tus credenciales locales de PostgreSQL si
-quieres probar contra una base local.
+### FastAPI
 
-Frontend:
+```powershell
+cd python-ai
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app:app --reload --port 8001
+```
+
+Swagger local:
+
+```text
+http://localhost:8001/docs
+```
+
+### Frontend React
 
 ```powershell
 cd frontend
@@ -34,136 +181,47 @@ copy .env.example .env
 npm run dev
 ```
 
-Variables del frontend:
-
-```env
-VITE_API_URL=http://localhost:8080
-VITE_CLOUDINARY_CLOUD_NAME=tu_cloud_name
-VITE_CLOUDINARY_UPLOAD_PRESET=tu_unsigned_preset
-```
-
-## Script de Base de Datos
-
-El script esta en:
+Frontend local:
 
 ```text
-backend/database/001_schema_inicial.sql
+http://localhost:5173
 ```
 
-Crea las tablas `productos` y `pedidos`, e inserta 3 productos iniciales. En
-Render ejecútalo desde pgAdmin antes de configurar `DDL_AUTO=validate`.
+## Base de Datos
 
-## Cloudinary
+La base de datos usa PostgreSQL nativo de Render. Las tablas principales son:
 
-1. Crea una cuenta en Cloudinary.
-2. Entra al Dashboard y copia tu `cloud_name`.
-3. Ve a `Settings > Upload`.
-4. En `Upload presets`, crea un preset unsigned.
-5. Limita el preset a imagenes si la pantalla te muestra esa opcion.
-6. Copia el nombre del preset.
-7. En Vercel configura:
-   - `VITE_CLOUDINARY_CLOUD_NAME`
-   - `VITE_CLOUDINARY_UPLOAD_PRESET`
+- `talent_candidates`
+- `talent_evaluations`
+- `talent_predictions`
 
-Referencia: [Cloudinary Upload Widget](https://cloudinary.com/documentation/upload_widget).
+Relaciones:
 
-## Render: PostgreSQL y Backend
+- Una evaluacion pertenece a un candidato.
+- Una prediccion pertenece a una evaluacion.
+- Al eliminar una evaluacion, se elimina su prediccion asociada por cascade.
 
-1. Sube el repositorio a GitHub.
-2. En Render, crea la base desde `New > Postgres`.
-3. Guarda estos datos de la base:
-   - Internal Database URL
-   - External Database URL
-   - Database
-   - User
-   - Password
-4. Crea un Web Service desde GitHub.
-5. Configura:
-   - Root Directory: `backend`
-   - Runtime: Docker
-   - Dockerfile Path: `Dockerfile`
-6. Variables del servicio backend:
+## Pruebas
 
-```env
-DB_URL=jdbc:postgresql://<internal-host>:5432/<database>
-DB_USERNAME=<render-user>
-DB_PASSWORD=<render-password>
-DDL_AUTO=validate
-CORS_ALLOWED_ORIGINS=https://<frontend>.vercel.app
+Backend:
+
+```powershell
+cd backend
+.\mvnw.cmd test
 ```
 
-Usa el host interno para el backend de Render. El formato de `DB_URL` debe ser
-JDBC, no pegues la URL `postgres://` directamente.
+Frontend:
 
-Cuando el backend este desplegado, prueba:
-
-```text
-https://<backend>.onrender.com/api/productos
+```powershell
+cd frontend
+npm run build
 ```
 
-Referencias:
+## Notas de Produccion
 
-- [Render Web Services](https://render.com/docs/web-services)
-- [Render Postgres](https://render.com/docs/postgresql-creating-connecting)
-
-## Conectar PostgreSQL de Render desde pgAdmin Local
-
-Usa los datos externos de Render, no los internos.
-
-1. En Render, abre tu PostgreSQL.
-2. Ve a la seccion `Info` o `Connect`.
-3. Copia los datos del `External Database URL`.
-4. En pgAdmin, click derecho en `Servers`.
-5. Selecciona `Register > Server`.
-6. Tab `General`:
-   - Name: `PC3 Render DB`
-7. Tab `Connection`:
-   - Host name/address: host externo de Render
-   - Port: `5432`
-   - Maintenance database: nombre de la base
-   - Username: usuario de Render
-   - Password: password de Render
-8. Tab `SSL`:
-   - SSL mode: `Require`
-9. Guarda la conexion.
-10. Abre `Query Tool`.
-11. Copia y ejecuta `backend/database/001_schema_inicial.sql`.
-
-Nota: pgAdmin corre fuera de Render, por eso usa la URL externa. El backend
-desplegado en Render debe usar la URL interna.
-
-## Vercel: Frontend
-
-1. En Vercel, importa el repositorio desde GitHub.
-2. Configura:
-   - Root Directory: `frontend`
-   - Framework Preset: Vite
-   - Build Command: `npm run build`
-   - Output Directory: `dist`
-3. Variables:
-
-```env
-VITE_API_URL=https://<backend>.onrender.com
-VITE_CLOUDINARY_CLOUD_NAME=<cloud-name>
-VITE_CLOUDINARY_UPLOAD_PRESET=<unsigned-preset>
-```
-
-4. Despliega.
-5. Copia la URL final de Vercel.
-6. En Render, actualiza `CORS_ALLOWED_ORIGINS` con esa URL.
-7. Redeploy del backend si Render no lo reinicia automaticamente.
-
-Referencias:
-
-- [Vercel Vite](https://vercel.com/docs/frameworks/frontend/vite)
-- [Vercel Monorepos](https://vercel.com/docs/monorepos)
-
-## Flujo de Prueba
-
-1. Abrir la URL de Vercel.
-2. Ver los 3 productos iniciales.
-3. Pedir un producto y comprobar que baja el stock.
-4. Verificar que un producto con stock `0` queda bloqueado.
-5. Crear un producto nuevo.
-6. Subir su imagen a Cloudinary.
-7. Confirmar que aparece en el catalogo y se guarda en PostgreSQL.
+- React no llama directamente a FastAPI.
+- React consume Spring Boot.
+- Spring Boot llama a FastAPI mediante `PYTHON_AI_URL`.
+- Spring Boot guarda candidatos, evaluaciones y predicciones en PostgreSQL.
+- Cloudinary guarda las imagenes y la base de datos solo conserva la URL segura.
+- Si Render esta dormido, el primer request puede tardar o fallar; abrir los enlaces publicos de Render ayuda a despertar los servicios.
