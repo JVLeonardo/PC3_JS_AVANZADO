@@ -384,9 +384,39 @@ input[type="range"] {
   align-items: center;
 }
 
+.history-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.history-stats article {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.history-stats strong {
+  overflow-wrap: anywhere;
+  color: var(--heading);
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.history-stats span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .history-row {
   display: grid;
-  grid-template-columns: 1fr 70px auto;
+  grid-template-columns: 56px minmax(160px, 1.2fr) minmax(160px, 1fr) 76px auto;
   gap: 12px;
   align-items: center;
   padding: 12px;
@@ -400,9 +430,43 @@ input[type="range"] {
   background: #eff6ff;
 }
 
-.history-row div:first-child {
+.history-avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #0b1220;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.history-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.history-main,
+.history-profile,
+.history-skill {
   display: grid;
   gap: 4px;
+  min-width: 0;
+}
+
+.history-main strong,
+.history-profile strong,
+.history-skill strong {
+  overflow-wrap: anywhere;
+  color: var(--heading);
+}
+
+.history-main small {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .history-row span {
@@ -413,6 +477,20 @@ input[type="range"] {
 .history-actions {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
+}
+
+.history-delete {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-color: #fecaca;
+  color: var(--danger);
+  font-size: 20px;
+  line-height: 1;
+  background: #fff7f7;
 }
 
 .message {
@@ -456,12 +534,39 @@ input[type="range"] {
   .confidence-ring {
     margin: 0 auto;
   }
+
+  .history-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .history-row {
+    grid-template-columns: 48px 1fr auto;
+  }
+
+  .history-profile,
+  .history-skill {
+    grid-column: 2 / -1;
+  }
+
+  .history-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 620px) {
   .app-shell {
     width: min(100% - 20px, 1240px);
     padding-top: 10px;
+  }
+
+  .history-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .history-stats {
+    grid-template-columns: 1fr;
   }
 
   .hero-panel,

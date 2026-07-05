@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 @Component
 public class PythonTalentClient {
 
-    // Lee la URL de tu archivo env/local.env
-    @Value("${PYTHON_AI_URL}")
+    // Usa la propiedad estable con fallback definido en application.properties.
+    @Value("${python.ai.url:http://localhost:8001}")
     private String pythonAiUrl;
 
     private final RestTemplate restTemplate;

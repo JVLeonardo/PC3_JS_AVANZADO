@@ -154,7 +154,7 @@ function App() {
       setResult(null)
       setUsingMock(false)
       setError(
-        'No se pudo conectar cn el fastapi, asegurate de abrir el link de render para que se levante el servicio'
+        'No se pudo conectar con el servicio de predicción IA. Verifica que Spring Boot y FastAPI estén en línea.'
       )
     } finally {
       setLoading(false)
