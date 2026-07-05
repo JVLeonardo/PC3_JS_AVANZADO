@@ -145,7 +145,7 @@ function App() {
 
     setLoading(true)
     setError('')
-    setNotice('')
+    setNotice('Levantando Spring Boot y FastAPI en Render si estaban dormidos. Esto puede tardar unos segundos...')
     setUsingMock(false)
 
     const payload = {
@@ -162,10 +162,12 @@ function App() {
     try {
       const response = await predictTalent(payload)
       setResult(normalizeResult(response, payload))
+      setNotice('')
       await refreshHistory({ silent: true })
     } catch {
       setResult(null)
       setUsingMock(false)
+      setNotice('')
       notifyRenderServiceError()
     } finally {
       setLoading(false)

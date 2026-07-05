@@ -55,6 +55,10 @@ function TalentForm({ form, preferences, loading, onChange, onSubmit, onUploadAv
         </div>
       </div>
 
+      <p className="form-helper">
+        Arrastra los sliders con el mouse para ajustar tus habilidades antes de analizar tu perfil.
+      </p>
+
       <div className="slider-stack">
         {skillFields.map((field) => (
           <label className="range-field" key={field.name}>

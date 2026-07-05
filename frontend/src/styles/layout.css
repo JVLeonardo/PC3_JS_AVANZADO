@@ -161,6 +161,17 @@ input[type="email"],
   font-size: 13px;
 }
 
+.form-helper {
+  margin: -4px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .slider-stack {
   display: grid;
   gap: 14px;

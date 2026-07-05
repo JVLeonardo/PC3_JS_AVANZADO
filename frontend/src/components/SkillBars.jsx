@@ -12,7 +12,6 @@ function SkillBars({ skills }) {
       <div className="section-heading">
         <p className="eyebrow">Skills</p>
         <h2>Barras de habilidad</h2>
-        <p>Arrastra los sliders del formulario con el mouse para ajustar tus habilidades.</p>
       </div>
       <div className="bar-list">
         {Object.entries(skills).map(([key, value]) => (
