@@ -22,7 +22,7 @@ function TalentForm({ form, preferences, loading, onChange, onSubmit, onUploadAv
             value={form.nombrePostulante}
             onChange={(event) => onChange('nombrePostulante', event.target.value)}
             maxLength="120"
-            placeholder="Ej. Ana Torres"
+            placeholder="Enrique Lee"
             required
           />
         </label>
@@ -34,7 +34,7 @@ function TalentForm({ form, preferences, loading, onChange, onSubmit, onUploadAv
             value={form.emailPostulante}
             onChange={(event) => onChange('emailPostulante', event.target.value)}
             maxLength="160"
-            placeholder="ana@mail.com"
+            placeholder="lee@gmail.com"
           />
         </label>
       </div>

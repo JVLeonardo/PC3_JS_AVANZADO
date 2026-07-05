@@ -18,14 +18,17 @@ const initialForm = {
   nombrePostulante: '',
   emailPostulante: '',
   avatarUrl: '',
-  javascript: 82,
-  react: 78,
-  springBoot: 62,
-  pythonDatos: 55,
-  sql: 70,
-  experienciaProyectos: 4,
+  javascript: 0,
+  react: 0,
+  springBoot: 0,
+  pythonDatos: 0,
+  sql: 0,
+  experienciaProyectos: 0,
   preferencia: 3,
 }
+
+const RENDER_SERVICE_ERROR =
+  'No se pudo conectar con el servicio de predicción IA. Verifica que Spring Boot y FastAPI estén en línea. Si están desplegados en Render, ingresa primero a sus enlaces para despertar los servicios y vuelve a intentar.'
 
 function normalizeResult(response, input) {
   const prediccion = response?.perfilRecomendado || response?.prediccion || 'FULLSTACK_JUNIOR'
@@ -67,20 +70,30 @@ function App() {
   )
 
   useEffect(() => {
-    refreshHistory()
+    refreshHistory({ silent: true })
   }, [])
 
   function updateField(name, value) {
     setForm((current) => ({ ...current, [name]: value }))
   }
 
-  async function refreshHistory() {
+  function notifyRenderServiceError(message = RENDER_SERVICE_ERROR) {
+    setError(message)
+    window.alert(message)
+  }
+
+  async function refreshHistory({ silent = false } = {}) {
     setHistoryLoading(true)
     try {
       const items = await getHistory()
       setHistory(Array.isArray(items) ? items : [])
     } catch {
       setHistory([])
+      if (!silent) {
+        notifyRenderServiceError(
+          'No se pudo cargar el historial. Verifica que el backend Spring Boot esté en línea. Si está desplegado en Render, ingresa primero a su enlace para despertar el servicio y vuelve a intentar.'
+        )
+      }
     } finally {
       setHistoryLoading(false)
     }
@@ -149,17 +162,16 @@ function App() {
     try {
       const response = await predictTalent(payload)
       setResult(normalizeResult(response, payload))
-      await refreshHistory()
+      await refreshHistory({ silent: true })
     } catch {
       setResult(null)
       setUsingMock(false)
-      setError(
-        'No se pudo conectar con el servicio de predicción IA. Verifica que Spring Boot y FastAPI estén en línea.'
-      )
+      notifyRenderServiceError()
     } finally {
       setLoading(false)
     }
   }
+
   async function handleSelectHistory(id) {
     setSelectedHistoryId(id)
     setError('')
@@ -175,8 +187,10 @@ function App() {
         avatarUrl: detail.avatarUrl || entrada.avatarUrl || '',
       }))
       setUsingMock(false)
-    } catch (err) {
-      setError(err.message)
+    } catch {
+      notifyRenderServiceError(
+        'No se pudo cargar el detalle de la evaluación. Verifica que el backend Spring Boot esté en línea. Si está desplegado en Render, ingresa primero a su enlace para despertar el servicio y vuelve a intentar.'
+      )
     }
   }
 
@@ -187,9 +201,11 @@ function App() {
       if (selectedHistoryId === id) {
         setSelectedHistoryId(null)
       }
-      await refreshHistory()
-    } catch (err) {
-      setError(err.message)
+      await refreshHistory({ silent: true })
+    } catch {
+      notifyRenderServiceError(
+        'No se pudo eliminar la evaluación. Verifica que el backend Spring Boot esté en línea. Si está desplegado en Render, ingresa primero a su enlace para despertar el servicio y vuelve a intentar.'
+      )
     }
   }
 
@@ -200,13 +216,13 @@ function App() {
           <p className="eyebrow">UTP · JavaScript Avanzado · PC3</p>
           <h1>TalentMatch AI</h1>
           <p className="hero-copy">
-            Descubre el perfil tecnologico ideal segun tus habilidades, preferencias y
+            Descubre el perfil tecnológico ideal según tus habilidades, preferencias y
             experiencia en proyectos junior.
           </p>
         </div>
         <div className="hero-stat">
-          <span>4</span>
-          <p>perfiles evaluados por IA</p>
+          <span>{history.length}</span>
+          <p>evaluaciones registradas</p>
         </div>
       </section>
 
@@ -232,8 +248,7 @@ function App() {
             <SkillBars skills={skillValues} />
             <ProfileRanking ranking={result?.ranking} />
           </div>
-          {/* Le pasamos el 'form' para que calcule el reto especial */}
-          <Roadmap result={result} form={form} /> 
+          <Roadmap result={result} form={form} />
         </section>
       </section>
 
@@ -241,7 +256,7 @@ function App() {
         history={history}
         loading={historyLoading}
         selectedId={selectedHistoryId}
-        onRefresh={refreshHistory}
+        onRefresh={() => refreshHistory()}
         onSelect={handleSelectHistory}
         onDelete={handleDeleteHistory}
       />
