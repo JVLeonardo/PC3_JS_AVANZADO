@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { PROFILE_CONTENT, PREFERENCE_OPTIONS, buildMockResult } from './data/profileContent'
+import { PROFILE_CONTENT, PREFERENCE_OPTIONS } from './data/profileContent'
 import { uploadAvatar } from './services/cloudinaryUpload'
 import {
   deleteEvaluation,
@@ -37,7 +37,7 @@ function normalizeResult(response, input) {
     prediccion,
     perfilRecomendado: prediccion,
     confianza: Number(response?.confianza ?? 0.86),
-    ranking: response?.ranking || response?.rankingJson || buildMockResult(input).ranking,
+    ranking: response?.ranking || response?.rankingJson || [],
     recomendaciones: response?.recomendaciones || profile.recomendaciones,
     entrada: response?.entrada || input,
     descripcion: profile.descripcion,
@@ -151,11 +151,10 @@ function App() {
       setResult(normalizeResult(response, payload))
       await refreshHistory()
     } catch {
-      const mock = buildMockResult(payload)
-      setResult(normalizeResult(mock, payload))
-      setUsingMock(true)
-      setNotice(
-        'Backend TalentMatch pendiente: mostrando resultado demo para validar la interfaz.'
+      setResult(null)
+      setUsingMock(false)
+      setError(
+        'No se pudo conectar cn el fastapi, asegurate de abrir el link de render para que se levante el servicio'
       )
     } finally {
       setLoading(false)
